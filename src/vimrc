@@ -1,0 +1,340 @@
+set nocompatible
+set smarttab  
+set tabstop=4  
+set expandtab
+set foldmethod=indent
+"继承前一行的缩进方式，特别适用于多行注释
+set autoindent
+set tabstop=4 
+set softtabstop=4
+set shiftwidth=4
+"实际使用时，建议将 <space> 设为 za 的快捷键：
+nnoremap <space> za
+"并设置启动vim时不折叠：
+set foldlevelstart=99
+
+"set paste " 使得缩进无效
+"
+"为C程序提供自动缩进
+set smartindent
+
+"使用C样式的缩进
+set cindent
+
+"support xterm 256 colors
+"set t_Co=256
+set nu
+
+set tags=./tags;../tags;../../tags;../../../tags
+set hlsearch
+syntax on
+
+set magic 
+inoremap <C-]>             <C-X><C-]>
+inoremap <C-F>             <C-X><C-F>
+inoremap <C-D>             <C-X><C-D>
+inoremap <C-L>             <C-X><C-L> 
+
+function! Mydict()
+    windo if expand("%")=="diCt-tmp" | q!|return|endif
+    let expl=system('sdcv -n ' . expand("<cword>"))
+    "windo if expand("%")=="diCt-tmp" | q!|endif
+
+    35sp diCt-tmp
+    "setlocal buftype=nofile bufhidden=hide noswapfile
+    setlocal buftype=nofile
+    1s/^/\=expl/
+    1
+endfunction
+nmap F :call Mydict()<CR>
+
+"set nocompatible                " be iMproved
+"filetype off                    " required!
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'scrooloose/syntastic'
+Bundle 'ervandew/supertab'
+Bundle 'scrooloose/nerdtree'
+"......................................
+filetype plugin indent on
+"nnoremap <leader>gw :YcmCompleter GoToDeclaration<CR>
+"nnoremap <leader>gl :YcmCompleter GoToDefinition<CR>
+"nnoremap <leader>ge :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nmap <F3> :YcmDiags<CR>
+nmap <F4> :cw<CR>
+""""""""""syntastic""""""""""""
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_cpp_include_dirs = ['/usr/include/']
+"let g:syntastic_cpp_remove_include_errors = 1
+"let g:syntastic_cpp_check_header = 1
+"let g:syntastic_cpp_compiler = 'clang++'
+"let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
+""set error or warning signs
+"let g:syntastic_error_symbol = 'E'
+"let g:syntastic_warning_symbol = 'W'
+""whether to show balloons
+""let g:syntastic_enable_balloons = 1
+
+""""""""""""YCM""""""""""""""""""""
+"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_error_symbol = 'E'
+let g:ycm_warning_symbol = 'W'
+
+"youcompleteme  默认tab  s-tab 和自动补全冲突
+let g:ycm_key_list_select_completion=['<c-j>']
+"let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion=['<c-k>']
+"let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
+
+let g:ycm_collect_identifiers_from_tags_files=1 " 开启 YCM 基于标签引擎
+let g:ycm_min_num_of_chars_for_completion=2 " 从第2个键入字符就开始罗列匹配项
+let g:ycm_cache_omnifunc=0  " 禁止缓存匹配项,每次都重新生成匹配项
+let g:ycm_seed_identifiers_with_syntax=1    " 语法关键字补全
+"nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>    "force recomile with syntastic
+"nnoremap <leader>lo :lopen<CR> "open locationlist
+"nnoremap <leader>lc :lclose<CR>    "close locationlist
+inoremap <leader><leader> <C-x><C-o>
+"在注释输入中也能补全
+let g:ycm_complete_in_comments = 1
+"在字符串输入中也能补全
+let g:ycm_complete_in_strings = 1
+"注释和字符串中的文字也会被收入补全
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+
+set showcmd     " Show (partial) command in status line.
+set showmatch       " Show matching brackets.
+set smartcase       " Do smart case matching
+set incsearch       " Incremental search
+set autowrite       " Automatically save before commands like :next and :make
+set wildmenu
+set backspace=indent,eol,start
+set visualbell
+"system call man
+source $VIMRUNTIME/ftplugin/man.vim
+"光标悬停处自动高亮
+autocmd CursorMoved * silent! exe printf('match Underlined /\<%s\>/', expand('<cword>'))
+"=====================unite.vim=========================================================================
+"====https://github.com/Shougo/unite.vim==
+"=====================================================
+"Unite.vim The prefix key.
+"=====================================================
+nnoremap <silent> <Leader>U :Unite buffer file_mru file bookmark <CR>
+let g:unite_source_file_mru_limit = 10
+let g:unite_cursor_line_highlight = 'WarningMsg'
+let g:ycm_semantic_triggers = {}
+let g:ycm_semantic_triggers.c = ['->', '.', ' ', '(', '[', '&']
+"LET g:unite_abbr_highlight = 'TabLine'
+
+" For optimize.
+let g:unite_source_file_mru_filename_format = ''
+"===========================Winmanager================================
+let g:NERDTree_title="[NERDTree]"
+let g:NERDTreeWinPos=1
+"let g:NERDTreeWinSize=20 
+let g:AutoOpenWinManager=1
+let g:winManagerOnRightSide=1
+let g:winManagerWindowLayout="NERDTree|BufExplorer|TagList"
+let g:winManagerWindowLayout="NERDTree|BufExplorer"
+"let g:winManagerWindowLayout="FileExplorer|BufExplorer|TagList"
+let g:bufExplorerMaxHeight=60
+let g:bufExplorerMimHeight=32
+let g:winManagerWidth=32
+
+function! NERDTree_Start()
+    exec 'NERDTree'
+endfunction
+
+function! NERDTree_IsValid()
+    return 1
+endfunction
+
+nmap wm :WMToggle<CR>
+nmap tl :Tlist<CR>
+nmap nu :set invnumber<CR>
+nmap ps :set invpaste<CR>
+nmap hl :set invhlsearch<CR>
+
+" CTAGS TAGLIST
+"let Tlist_Ctags_Cmd='../tags;../../tags;../../../tags;../../../../tags'
+let Tlist_Auto_Open=0
+let Tlist_Show_One_File=1
+let Tlist_Exit_OnlyWindow=1
+let Tlist_Use_Right_Window=1
+
+" CSCOPE
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+set csto=1
+:cscope add ../cscope.out
+:cscope add ../../cscope.out
+:cscope add ../../../cscope.out
+:cscope add ../../../../cscope.out
+
+"cs find s ---- 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
+"cs find g ---- 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
+"cs find d ---- 查找本函数调用的函数
+"cs find c ---- 查找调用本函数的函数
+"cs find t ---- 查找指定的字符串
+"cs find e ---- 查找egrep模式，相当于egrep功能，但查找速度快多了
+"cs find f ---- 查找并打开文件，类似vim的find功能
+"cs find i ---- 查找包含本文件的文档
+
+nmap ts :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap tg :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap tc :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap tt :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap te :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap tf :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap ti :cs find i <C-R>=expand("<cfile>")<CR><CR>
+nmap td :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+nmap <F12> :r !date<CR>
+
+set completeopt=longest,menu    "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif "离开插入模式后自动关闭预览窗口
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前项
+"上下左右键的行为 会显示其他信息
+inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+
+" SuperTab
+let g:SuperTabDefaultCompletionType="context" 
+
+""定义函数SetTitle，自动插入文件头 
+autocmd BufNewFile *.h set filetype=H
+autocmd BufNewFile *.c,*.cc,*.py,*.cpp,*.sh,*.java,*.h,*.hpp exec ":call SetTitle()"
+
+func SetTitle()
+    let Company = "xiaojukeji"
+    "如果文件类型为.sh文件 
+    if &filetype == 'sh'
+        call setline(1,"#!/bin/bash")
+        call append(line("."), "")
+        call append(line(".")+1, "# File    : ". expand("%:t")) 
+        call append(line(".")+2, "# Author  : lihan")
+        call append(line(".")+3, "# Version : 1.0" )
+        call append(line(".")+4, "# Company : ". Company )
+        call append(line(".")+5, "# Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+6, "# Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
+        call append(line(".")+7, "")
+        call append(line(".")+8, "")
+    elseif &filetype == 'H' 
+        let header_name = "__".toupper(substitute(expand("%:t"),'\.','_','g')) . "__"
+
+        call setline(1,"/*")
+        call append(line("."),   "*  File    : ".expand("%:t"))
+        call append(line(".")+1, "*  Author  : lihan")
+        call append(line(".")+2, "*  Version : 1.0" )
+        call append(line(".")+3, "*  Company : ". Company )
+        call append(line(".")+4, "*  Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+5, "*  Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
+        call append(line(".")+6, "*/")
+        call append(line(".")+7, "")
+        call append(line(".")+8, "#ifndef ". header_name)
+        call append(line(".")+9, "#define ". header_name)
+        call append(line(".")+10, "")
+        call append(line(".")+11, "#endif")
+        call append(line(".")+12, "")
+
+    elseif &filetype == 'c' 
+        call setline(1,"/*")
+        call append(line("."),   "*  File    : ".expand("%:t"))
+        call append(line(".")+1, "*  Author  : lihan")
+        call append(line(".")+2, "*  Version : 1.0" )
+        call append(line(".")+3, "*  Company : ". Company )
+        call append(line(".")+4, "*  Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+5, "*  Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
+        call append(line(".")+6, "*/")
+        call append(line(".")+7, "")
+        call append(line(".")+8, "#include<stdio.h>")
+        call append(line(".")+9, "")
+        call append(line(".")+10, "int main(int argc, char* argv[]){")
+        call append(line(".")+11, "")
+        call append(line(".")+12, "    return 0;")
+        call append(line(".")+13,"}")
+    elseif &filetype == 'cpp' 
+        call setline(1,"/*")
+        call append(line("."),   "*  File    : ".expand("%:t"))
+        call append(line(".")+1, "*  Author  : lihan")
+        call append(line(".")+2, "*  Version : 1.0" )
+        call append(line(".")+3, "*  Company : ". Company )
+        call append(line(".")+4, "*  Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+5, "*  Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
+        call append(line(".")+6, "*/")
+        call append(line(".")+7, "")
+        call append(line(".")+8, "#include<iostream>")
+        call append(line(".")+9, "#include<string>")
+        call append(line(".")+10, "#include<algorithm>")
+        call append(line(".")+11, "")
+        call append(line(".")+12, "using namespace std;")
+        call append(line(".")+13, "int main(int argc, char* argv[]){")
+        call append(line(".")+14, "")
+        call append(line(".")+15, "    return 0;")
+        call append(line(".")+16,"}")
+    elseif &filetype == 'python'
+        call setline(1,"\#!/usr/bin/env python")
+        call append(line("."), "#encoding: utf-8")
+        call append(line(".")+1, "")
+        call append(line(".")+2, "# File   : ".expand("%:t"))
+        call append(line(".")+3, "# Author : lihan")
+        call append(line(".")+4, "# Version: 1.0" )
+        call append(line(".")+5, "# Company: ". Company )
+        call append(line(".")+6, "# Contact: lihan@diditaxi.com.cn")
+        call append(line(".")+7, "# Date   : ".strftime("%Y-%m-%d %H:%M:%S"))
+        call append(line(".")+8, "")
+        call append(line(".")+9, "import os,sys")
+        call append(line(".")+10, "")
+        call append(line(".")+11, "if __name__ == '__main__':")
+        call append(line(".")+12, "    pass")
+    else
+        call setline(1,"/*")
+        call append(line("."), "*  File    : ".expand("%:t"))
+        call append(line(".")+1, "*  Author  : lihan")
+        call append(line(".")+2, "*  Version : 1.0" )
+        call append(line(".")+3, "*  Company : ". Company )
+        call append(line(".")+4, "*  Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+5, "*  Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
+        call append(line(".")+6, "*/")
+        call append(line(".")+7, "")
+        call append(line(".")+8, "")
+    endif
+endfunc
+autocmd BufNewFile *.h set filetype=cpp
+"新建文件后，自动定位到文件末尾
+autocmd BufNewFile * normal G
+autocmd BufNewFile * normal k
+autocmd BufNewFile * normal $
+
+function SaveFile()
+    exec "w"
+endfunction
+function Quit()
+    exec "wqa"
+endfunction
+map  <C-e> :call SaveFile()<CR>
+imap <C-e> <ESC>:call SaveFile()<CR>
+vmap <C-e> <ESC>:call SaveFile()<CR> 
+map  <C-c> :call Quit()<CR>
+imap <C-c> <ESC>:call Quit()<CR>
+vmap <C-c> <ESC>:call Quit()<CR> 
+"man() {
+"    env \
+"        LESS_TERMCAP_mb=$(printf "\e[1;37m") \
+"        LESS_TERMCAP_md=$(printf "\e[1;37m") \
+"        LESS_TERMCAP_me=$(printf "\e[0m") \
+"        LESS_TERMCAP_se=$(printf "\e[0m") \
+"        LESS_TERMCAP_so=$(printf "\e[1;47;30m") \
+"        LESS_TERMCAP_ue=$(printf "\e[0m") \
+"        LESS_TERMCAP_us=$(printf "\e[0;36m") \
+"            man "$@"
+"}
+"
+"if [ -f ~/.git-completion.bash ]; then
+"      . ~/.git-completion.bash
+"fi

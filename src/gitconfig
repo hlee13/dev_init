@@ -1,0 +1,23 @@
+[user]
+    name = hlee13
+    email = 55885293@qq.com
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+    lg = log
+    oneline = log --pretty=oneline --since='2 days ago'
+    onelog = log -p -1
+	df = difftool
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    ui = auto
+[core]
+    editor = vim
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
