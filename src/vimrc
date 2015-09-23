@@ -55,10 +55,10 @@ call vundle#rc()
 
 " let Vundle manage Vundle
 Bundle 'gmarik/vundle'
-Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/syntastic'
 Bundle 'ervandew/supertab'
 Bundle 'scrooloose/nerdtree'
+Bundle 'Valloric/YouCompleteMe'
 "......................................
 filetype plugin indent on
 "nnoremap <leader>gw :YcmCompleter GoToDeclaration<CR>
@@ -211,7 +211,10 @@ autocmd BufNewFile *.h set filetype=H
 autocmd BufNewFile *.c,*.cc,*.py,*.cpp,*.sh,*.java,*.h,*.hpp exec ":call SetTitle()"
 
 func SetTitle()
+    let Author = "lihan"
     let Company = "xiaojukeji"
+    let Contact = "lihan@didichuxing.com"
+
     "如果文件类型为.sh文件 
     if &filetype == 'sh'
         call setline(1,"#!/bin/bash")
@@ -220,19 +223,19 @@ func SetTitle()
         call append(line(".")+2, "# Author  : lihan")
         call append(line(".")+3, "# Version : 1.0" )
         call append(line(".")+4, "# Company : ". Company )
-        call append(line(".")+5, "# Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+5, "# Contact : ". Contact )
         call append(line(".")+6, "# Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
         call append(line(".")+7, "")
         call append(line(".")+8, "")
     elseif &filetype == 'H' 
-        let header_name = "__".toupper(substitute(expand("%:t"),'\.','_','g')) . "__"
+        let header_name = "_".toupper(substitute(expand("%:t"),'\.','_','g')) . "_"
 
         call setline(1,"/*")
         call append(line("."),   "*  File    : ".expand("%:t"))
-        call append(line(".")+1, "*  Author  : lihan")
+        call append(line(".")+1, "*  Author  : ". Author )
         call append(line(".")+2, "*  Version : 1.0" )
         call append(line(".")+3, "*  Company : ". Company )
-        call append(line(".")+4, "*  Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+4, "*  Contact : ". Contact )
         call append(line(".")+5, "*  Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
         call append(line(".")+6, "*/")
         call append(line(".")+7, "")
@@ -245,14 +248,14 @@ func SetTitle()
     elseif &filetype == 'c' 
         call setline(1,"/*")
         call append(line("."),   "*  File    : ".expand("%:t"))
-        call append(line(".")+1, "*  Author  : lihan")
+        call append(line(".")+1, "*  Author  : ". Author )
         call append(line(".")+2, "*  Version : 1.0" )
         call append(line(".")+3, "*  Company : ". Company )
-        call append(line(".")+4, "*  Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+4, "*  Contact : ". Contact )
         call append(line(".")+5, "*  Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
         call append(line(".")+6, "*/")
         call append(line(".")+7, "")
-        call append(line(".")+8, "#include<stdio.h>")
+        call append(line(".")+8, "#include <stdio.h>")
         call append(line(".")+9, "")
         call append(line(".")+10, "int main(int argc, char* argv[]){")
         call append(line(".")+11, "")
@@ -261,16 +264,16 @@ func SetTitle()
     elseif &filetype == 'cpp' 
         call setline(1,"/*")
         call append(line("."),   "*  File    : ".expand("%:t"))
-        call append(line(".")+1, "*  Author  : lihan")
+        call append(line(".")+1, "*  Author  : ". Author )
         call append(line(".")+2, "*  Version : 1.0" )
         call append(line(".")+3, "*  Company : ". Company )
-        call append(line(".")+4, "*  Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+4, "*  Contact : ". Contact )
         call append(line(".")+5, "*  Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
         call append(line(".")+6, "*/")
         call append(line(".")+7, "")
-        call append(line(".")+8, "#include<iostream>")
-        call append(line(".")+9, "#include<string>")
-        call append(line(".")+10, "#include<algorithm>")
+        call append(line(".")+8, "#include <iostream>")
+        call append(line(".")+9, "#include <string>")
+        call append(line(".")+10, "#include <algorithm>")
         call append(line(".")+11, "")
         call append(line(".")+12, "using namespace std;")
         call append(line(".")+13, "int main(int argc, char* argv[]){")
@@ -282,10 +285,10 @@ func SetTitle()
         call append(line("."), "#encoding: utf-8")
         call append(line(".")+1, "")
         call append(line(".")+2, "# File   : ".expand("%:t"))
-        call append(line(".")+3, "# Author : lihan")
+        call append(line(".")+3, "# Author : ". Author )
         call append(line(".")+4, "# Version: 1.0" )
         call append(line(".")+5, "# Company: ". Company )
-        call append(line(".")+6, "# Contact: lihan@diditaxi.com.cn")
+        call append(line(".")+6, "# Contact: ". Contact )
         call append(line(".")+7, "# Date   : ".strftime("%Y-%m-%d %H:%M:%S"))
         call append(line(".")+8, "")
         call append(line(".")+9, "import os,sys")
@@ -295,10 +298,10 @@ func SetTitle()
     else
         call setline(1,"/*")
         call append(line("."), "*  File    : ".expand("%:t"))
-        call append(line(".")+1, "*  Author  : lihan")
+        call append(line(".")+1, "*  Author  : ". Author )
         call append(line(".")+2, "*  Version : 1.0" )
         call append(line(".")+3, "*  Company : ". Company )
-        call append(line(".")+4, "*  Contact : lihan@diditaxi.com.cn")
+        call append(line(".")+4, "*  Contact : ". Contact )
         call append(line(".")+5, "*  Date    : ".strftime("%Y-%m-%d %H:%M:%S"))
         call append(line(".")+6, "*/")
         call append(line(".")+7, "")
