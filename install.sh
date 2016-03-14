@@ -22,11 +22,11 @@ cp ./src/*.vim ~/.vim/plugin/
 mkdir -p ~/.vim/bundle
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 
-grep PATH ~/.bashrc | grep \.scripts > /dev/null
+grep PATH ~/.bash_profile | grep \.scripts > /dev/null
 if [ $? -ne 0 ]; then
     # not found
-    echo "PATH=\$PATH:~/.scripts/" >> ~/.bashrc
-    source ~/.bashrc
+    echo "PATH=\$PATH:~/.scripts/" >> ~/.bash_profile
+    source ~/.bash_profile
 fi
 
 vim -c BundleInstall
