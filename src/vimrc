@@ -1,11 +1,300 @@
+autocmd BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
+"highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9|match OverLength /\%81v.*/
+"set colorcolumn=81
+
+syntax on
+set nocompatible
+set smarttab  
+set tabstop=4  
+set expandtab
+set foldmethod=indent
+"继承前一行的缩进方式，特别适用于多行注释
+set autoindent
+set softtabstop=4
+set shiftwidth=4
+"并设置启动vim时不折叠：
+set foldlevelstart=99
+
+" 使得缩进无效
+"set paste
+"为C程序提供自动缩进
+set smartindent
+"使用C样式的缩进
+set cindent
+
+"support xterm 256 colors
+"set t_Co=256
+set number
+
+set hlsearch
+set magic 
+set tags=tags
+set tags+=/Users/didi/WorkSpace/gitlab/tags
+
+inoremap <C-]>             <C-X><C-]>
+inoremap <C-F>             <C-X><C-F>
+inoremap <C-D>             <C-X><C-D>
+inoremap <C-L>             <C-X><C-L> 
+
+"实际使用时，建议将 <space> 设为 za 的快捷键：
+nnoremap <space> za
+"光标悬停处自动高亮
+autocmd CursorMoved * silent! exe printf('match Underlined /\<%s\>/', expand('<cword>'))
+
+function! Mydict()
+    windo if expand("%")=="diCt-tmp" | q!|return|endif
+    let expl=system('sdcv -n ' . expand("<cword>"))
+    "windo if expand("%")=="diCt-tmp" | q!|endif
+
+    35sp diCt-tmp
+    "setlocal buftype=nofile bufhidden=hide noswapfile
+    setlocal buftype=nofile
+    1s/^/\=expl/
+    1
+endfunction
+"nmap F :call Mydict()<CR>
+
+"filetype off                    " required!
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+Bundle 'ivanov/vim-ipython'
+Bundle 'maksimr/vim-jsbeautify'
+Bundle 'gmarik/vundle'
+Bundle 'scrooloose/syntastic'
+Bundle 'ervandew/supertab'
+Bundle 'scrooloose/nerdtree'
+Bundle 'Valloric/YouCompleteMe'
+"......................................
+filetype plugin indent on
+
+""""""""""syntastic""""""""""""
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_cpp_include_dirs = ['/usr/include/']
+"let g:syntastic_cpp_remove_include_errors = 1
+"let g:syntastic_cpp_check_header = 1
+"let g:syntastic_cpp_compiler = 'clang++'
+"let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
+""set error or warning signs
+"let g:syntastic_error_symbol = 'E'
+"let g:syntastic_warning_symbol = 'W'
+""whether to show balloons
+""let g:syntastic_enable_balloons = 1
+
+""""""""""""YCM""""""""""""""""
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_error_symbol = 'E'
+let g:ycm_warning_symbol = 'W'
+
+"youcompleteme  默认tab  s-tab 和自动补全冲突
+let g:ycm_key_list_select_completion=['<c-j>']
+"let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion=['<c-k>']
+"let g:ycm_key_list_previous_completion = ['<Up>']
+let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
+
+let g:ycm_collect_identifiers_from_tags_files=1 " 开启 YCM 基于标签引擎
+let g:ycm_min_num_of_chars_for_completion=2 " 从第2个键入字符就开始罗列匹配项
+let g:ycm_cache_omnifunc=0  " 禁止缓存匹配项,每次都重新生成匹配项
+let g:ycm_seed_identifiers_with_syntax=1    " 语法关键字补全
+"nnoremap <leader>lo :lopen<CR> "open locationlist
+"nnoremap <leader>lc :lclose<CR>    "close locationlist
+inoremap <leader><leader> <C-x><C-o>
+"在注释输入中也能补全
+let g:ycm_complete_in_comments = 1
+"在字符串输入中也能补全
+let g:ycm_complete_in_strings = 1
+"注释和字符串中的文字也会被收入补全
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+
+set showcmd     " Show (partial) command in status line.
+set showmatch       " Show matching brackets.
+set smartcase       " Do smart case matching
+set incsearch       " Incremental search
+set autowrite       " Automatically save before commands like :next and :make
+set wildmenu
+set backspace=indent,eol,start
+set visualbell
+"system call man
+source $VIMRUNTIME/ftplugin/man.vim
+"'''''''''''unite.vim''''''''''''''''https://github.com/Shougo/unite.vim==
+"Unite.vim The prefix key.
+nnoremap <silent> <Leader>U :Unite buffer file_mru file bookmark <CR>
+let g:unite_source_file_mru_limit = 10
+let g:unite_cursor_line_highlight = 'WarningMsg'
+let g:ycm_semantic_triggers = {}
+let g:ycm_semantic_triggers.c = ['->', '.', ' ', '(', '[', '&']
+"LET g:unite_abbr_highlight = 'TabLine'
+
+" For optimize.
+let g:unite_source_file_mru_filename_format = ''
+"===============Winmanager===============
+let g:NERDTree_title="[NERDTree]"
+let g:NERDTreeWinPos=1
+"let g:NERDTreeWinSize=20 
+let g:AutoOpenWinManager=1
+let g:winManagerOnRightSide=1
+"let g:winManagerWindowLayout="NERDTree|BufExplorer|TagList"
+let g:winManagerWindowLayout="NERDTree|BufExplorer"
+"let g:winManagerWindowLayout="FileExplorer|BufExplorer|TagList"
+let g:bufExplorerMaxHeight=60
+let g:bufExplorerMimHeight=32
+let g:winManagerWidth=32
+
+function! NERDTree_Start()
+    exec 'NERDTree'
+endfunction
+
+function! NERDTree_IsValid()
+    return 1
+endfunction
+
+nmap wm :WMToggle<CR>
+nmap tl :Tlist<CR>
+nmap nu :set invnumber<CR>
+nmap ps :set invpaste<CR>
+nmap hl :set invhlsearch<CR>
+nmap kk :call Picker()<CR>
+nmap tm :r ~/.vim/templete/
+
+function! ItsServiceLst()
+    windo if expand("%")=="its-tmp" | q!|return|endif
+    let expl=system('ls /Users/didi/WorkSpace/gitlab/its/its-thrift/output/gen-py/')
+
+    vsp its-tmp
+    "setlocal buftype=nofile bufhidden=hide noswapfile
+    setlocal buftype=nofile
+    1s/^/\=expl/
+    1
+endfunction
+nmap tt :call ItsServiceLst()<CR>
+"nmap tt :r ! ls /Users/didi/WorkSpace/gitlab/its/its-thrift/output/gen-py/
+
+function PickMenu()
+    let color_lst=["green", "red", "yellow", "blue", "lightblue"]
+    let RAND=system("echo $RANDOM")
+    let RAND=RAND%len(color_lst)
+    exec "highlight Pmenu ctermbg=". color_lst[RAND]
+endfunction
+nmap ;; :call PickMenu()<CR>
+call PickMenu()
+
+"''''''''''''''CTAGS TAGLIST
+let Tlist_Ctags_Cmd='/Users/didi/ctags-5.8/bin/ctags'
+let Tlist_Auto_Open=0
+let Tlist_Show_One_File=1
+let Tlist_Exit_OnlyWindow=1
+let Tlist_Use_Right_Window=1
+
+"""""""""""""" CSCOPE
+"cs find s ---- 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
+"cs find g ---- 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
+"cs find d ---- 查找本函数调用的函数
+"cs find c ---- 查找调用本函数的函数
+"cs find t ---- 查找指定的字符串
+"cs find e ---- 查找egrep模式，相当于egrep功能，但查找速度快多了
+"cs find f ---- 查找并打开文件，类似vim的find功能
+"cs find i ---- 查找包含本文件的文档
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+set csto=1
+" :cscope add ../cscope.out
+" :cscope add ../../cscope.out
+" :cscope add ../../../cscope.out
+" :cscope add ../../../../cscope.out
+
+" SuperTab
+let g:SuperTabDefaultCompletionType="context" 
+
+set completeopt=longest,menu    "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif "离开插入模式后自动关闭预览窗口
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前项
+"上下左右键的行为 会显示其他信息
+inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+
+function SaveFile()
+    exec "w"
+endfunction
+function Quit()
+    exec "wqa"
+endfunction
+map  <C-e> :call SaveFile()<CR>
+imap <C-e> <ESC>:call SaveFile()<CR>
+vmap <C-e> <ESC>:call SaveFile()<CR> 
+map  <C-c> :call Quit()<CR>
+imap <C-c> <ESC>:call Quit()<CR>
+vmap <C-c> <ESC>:call Quit()<CR> 
+
+" .expand('%:p') 完整路径名
+" .expand('%:t:r').".cpp"
+" .expand('%:e') 后缀
+function ExChangeCppCodeFile()
+    if expand('%:e') == "h"
+        exec "vi " . expand('%:h') . "/" .expand('%:t:r') . ".cpp"
+    else 
+        exec "vi " . expand('%:h') . "/" .expand('%:t:r') . ".h"
+    endif
+endfunction
+map  <C-h> :call ExChangeCppCodeFile()<CR>
+
+"exec "vi ". "~/WorkSpace/gitlab/its/its-thrift/output/gen-py/". service_name . "/ttypes.py" 
+"exec "r ! sed 's/ITS_SERVICE_PYTHON_HEADER/". service_name ."/g' ~/.vim/templete/python/its-thrift.tpl"
+":for i in [1, 2, 3, 4]
+":  let c += i
+":endfor
+function! s:Path(p)
+    return a:p 
+endfunction 
+
+function ListItsService()
+    let service_name=expand("<cword>")
+
+    exec "r ! sed 's/ITS_SERVICE_PYTHON_HEADER/". service_name ."/g' ~/.vim/templete/python/its-thrift.tpl"
+
+    let s:files=s:Path(glob("~/WorkSpace/gitlab/its/its-thrift/output/gen-py/" . service_name ."/*.py"))
+    let file_lst=split(s:files, '\n')
+
+    vsp its-tmp
+    for f in file_lst
+        exec "view " . f
+    endfor
+    exec "q"
+endfunction
+nmap F :call ListItsService()<CR>
+
+"man() {
+"    env \
+"        LESS_TERMCAP_mb=$(printf "\e[1;37m") \
+"        LESS_TERMCAP_md=$(printf "\e[1;37m") \
+"        LESS_TERMCAP_me=$(printf "\e[0m") \
+"        LESS_TERMCAP_se=$(printf "\e[0m") \
+"        LESS_TERMCAP_so=$(printf "\e[1;47;30m") \
+"        LESS_TERMCAP_ue=$(printf "\e[0m") \
+"        LESS_TERMCAP_us=$(printf "\e[0;36m") \
+"            man "$@"
+"}
+"
+"if [ -f ~/.git-completion.bash ]; then
+"      . ~/.git-completion.bash
+"fi
+
+autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
+autocmd FileType json vnoremap <buffer> <c-f> :call RangeJsonBeautify()<cr>
+autocmd FileType jsx vnoremap <buffer> <c-f> :call RangeJsxBeautify()<cr>
+autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
+autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+
 ""定义函数SetTitle，自动插入文件头 
 autocmd BufNewFile *.h set filetype=H
 autocmd BufNewFile *.c,*.cc,*.py,*.cpp,*.sh,*.java,*.h,*.hpp exec ":call SetTitle()"
 
 func SetTitle()
-    let Author = "lihan"
-    let Company = "xiaojukeji"
-    let Contact = "lihan@didichuxing.com"
+    let Author = ""
+    let Company = ""
+    let Contact = "@.com"
 
     "如果文件类型为.sh文件 
     if &filetype == 'sh'
@@ -106,227 +395,5 @@ autocmd BufNewFile * normal G
 autocmd BufNewFile * normal k
 autocmd BufNewFile * normal $
 
-syntax on
-set nocompatible
-set smarttab  
-set tabstop=4  
-set expandtab
-set foldmethod=indent
-"继承前一行的缩进方式，特别适用于多行注释
-set autoindent
-set softtabstop=4
-set shiftwidth=4
-"并设置启动vim时不折叠：
-set foldlevelstart=99
-
-" 使得缩进无效
-"set paste
-"为C程序提供自动缩进
-set smartindent
-"使用C样式的缩进
-set cindent
-
-"support xterm 256 colors
-"set t_Co=256
-set number
-
-set hlsearch
-set magic 
-set tags=./tags;../tags;../../tags;../../../tags
-
-inoremap <C-]>             <C-X><C-]>
-inoremap <C-F>             <C-X><C-F>
-inoremap <C-D>             <C-X><C-D>
-inoremap <C-L>             <C-X><C-L> 
-
-"实际使用时，建议将 <space> 设为 za 的快捷键：
-nnoremap <space> za
-"光标悬停处自动高亮
-autocmd CursorMoved * silent! exe printf('match Underlined /\<%s\>/', expand('<cword>'))
-
-function! Mydict()
-    windo if expand("%")=="diCt-tmp" | q!|return|endif
-    let expl=system('sdcv -n ' . expand("<cword>"))
-    "windo if expand("%")=="diCt-tmp" | q!|endif
-
-    35sp diCt-tmp
-    "setlocal buftype=nofile bufhidden=hide noswapfile
-    setlocal buftype=nofile
-    1s/^/\=expl/
-    1
-endfunction
-nmap F :call Mydict()<CR>
-
-"filetype off                    " required!
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" let Vundle manage Vundle
-Bundle 'maksimr/vim-jsbeautify'
-Bundle 'gmarik/vundle'
-Bundle 'scrooloose/syntastic'
-Bundle 'ervandew/supertab'
-Bundle 'scrooloose/nerdtree'
-Bundle 'Valloric/YouCompleteMe'
-"......................................
-filetype plugin indent on
-
-""""""""""syntastic""""""""""""
-"let g:syntastic_check_on_open = 1
-"let g:syntastic_cpp_include_dirs = ['/usr/include/']
-"let g:syntastic_cpp_remove_include_errors = 1
-"let g:syntastic_cpp_check_header = 1
-"let g:syntastic_cpp_compiler = 'clang++'
-"let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libstdc++'
-""set error or warning signs
-"let g:syntastic_error_symbol = 'E'
-"let g:syntastic_warning_symbol = 'W'
-""whether to show balloons
-""let g:syntastic_enable_balloons = 1
-
-""""""""""""YCM""""""""""""""""
-"let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
-let g:ycm_error_symbol = 'E'
-let g:ycm_warning_symbol = 'W'
-
-"youcompleteme  默认tab  s-tab 和自动补全冲突
-let g:ycm_key_list_select_completion=['<c-j>']
-"let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion=['<c-k>']
-"let g:ycm_key_list_previous_completion = ['<Up>']
-let g:ycm_confirm_extra_conf=0 "关闭加载.ycm_extra_conf.py提示
-
-let g:ycm_collect_identifiers_from_tags_files=1 " 开启 YCM 基于标签引擎
-let g:ycm_min_num_of_chars_for_completion=2 " 从第2个键入字符就开始罗列匹配项
-let g:ycm_cache_omnifunc=0  " 禁止缓存匹配项,每次都重新生成匹配项
-let g:ycm_seed_identifiers_with_syntax=1    " 语法关键字补全
-"nnoremap <leader>lo :lopen<CR> "open locationlist
-"nnoremap <leader>lc :lclose<CR>    "close locationlist
-inoremap <leader><leader> <C-x><C-o>
-"在注释输入中也能补全
-let g:ycm_complete_in_comments = 1
-"在字符串输入中也能补全
-let g:ycm_complete_in_strings = 1
-"注释和字符串中的文字也会被收入补全
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-
-set showcmd     " Show (partial) command in status line.
-set showmatch       " Show matching brackets.
-set smartcase       " Do smart case matching
-set incsearch       " Incremental search
-set autowrite       " Automatically save before commands like :next and :make
-set wildmenu
-set backspace=indent,eol,start
-set visualbell
-"system call man
-source $VIMRUNTIME/ftplugin/man.vim
-"'''''''''''unite.vim''''''''''''''''https://github.com/Shougo/unite.vim==
-"Unite.vim The prefix key.
-nnoremap <silent> <Leader>U :Unite buffer file_mru file bookmark <CR>
-let g:unite_source_file_mru_limit = 10
-let g:unite_cursor_line_highlight = 'WarningMsg'
-let g:ycm_semantic_triggers = {}
-let g:ycm_semantic_triggers.c = ['->', '.', ' ', '(', '[', '&']
-"LET g:unite_abbr_highlight = 'TabLine'
-
-" For optimize.
-let g:unite_source_file_mru_filename_format = ''
-"===============Winmanager===============
-let g:NERDTree_title="[NERDTree]"
-let g:NERDTreeWinPos=1
-"let g:NERDTreeWinSize=20 
-let g:AutoOpenWinManager=1
-let g:winManagerOnRightSide=1
-"let g:winManagerWindowLayout="NERDTree|BufExplorer|TagList"
-let g:winManagerWindowLayout="NERDTree|BufExplorer"
-"let g:winManagerWindowLayout="FileExplorer|BufExplorer|TagList"
-let g:bufExplorerMaxHeight=60
-let g:bufExplorerMimHeight=32
-let g:winManagerWidth=32
-
-function! NERDTree_Start()
-    exec 'NERDTree'
-endfunction
-
-function! NERDTree_IsValid()
-    return 1
-endfunction
-
-nmap wm :WMToggle<CR>
-nmap tl :Tlist<CR>
-nmap nu :set invnumber<CR>
-nmap ps :set invpaste<CR>
-nmap hl :set invhlsearch<CR>
-nmap pk :call Picker()<CR>
-nmap tm :r ~/.vim/templete/
-nmap <F12> :r !date<CR>
-
-
-"''''''''''''''CTAGS TAGLIST
-let Tlist_Ctags_Cmd='/Users/didi/ctags-5.8/bin/ctags'
-let Tlist_Auto_Open=0
-let Tlist_Show_One_File=1
-let Tlist_Exit_OnlyWindow=1
-let Tlist_Use_Right_Window=1
-
-"""""""""""""" CSCOPE
-"cs find s ---- 查找C语言符号，即查找函数名、宏、枚举值等出现的地方
-"cs find g ---- 查找函数、宏、枚举等定义的位置，类似ctags所提供的功能
-"cs find d ---- 查找本函数调用的函数
-"cs find c ---- 查找调用本函数的函数
-"cs find t ---- 查找指定的字符串
-"cs find e ---- 查找egrep模式，相当于egrep功能，但查找速度快多了
-"cs find f ---- 查找并打开文件，类似vim的find功能
-"cs find i ---- 查找包含本文件的文档
-set cscopequickfix=s-,c-,d-,i-,t-,e-
-set csto=1
-:cscope add ../cscope.out
-:cscope add ../../cscope.out
-:cscope add ../../../cscope.out
-:cscope add ../../../../cscope.out
-
-" SuperTab
-let g:SuperTabDefaultCompletionType="context" 
-
-set completeopt=longest,menu    "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif "离开插入模式后自动关闭预览窗口
-inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"    "回车即选中当前项
-"上下左右键的行为 会显示其他信息
-inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
-inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
-inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
-
-function SaveFile()
-    exec "w"
-endfunction
-function Quit()
-    exec "wqa"
-endfunction
-map  <C-e> :call SaveFile()<CR>
-imap <C-e> <ESC>:call SaveFile()<CR>
-vmap <C-e> <ESC>:call SaveFile()<CR> 
-map  <C-c> :call Quit()<CR>
-imap <C-c> <ESC>:call Quit()<CR>
-vmap <C-c> <ESC>:call Quit()<CR> 
-"man() {
-"    env \
-"        LESS_TERMCAP_mb=$(printf "\e[1;37m") \
-"        LESS_TERMCAP_md=$(printf "\e[1;37m") \
-"        LESS_TERMCAP_me=$(printf "\e[0m") \
-"        LESS_TERMCAP_se=$(printf "\e[0m") \
-"        LESS_TERMCAP_so=$(printf "\e[1;47;30m") \
-"        LESS_TERMCAP_ue=$(printf "\e[0m") \
-"        LESS_TERMCAP_us=$(printf "\e[0;36m") \
-"            man "$@"
-"}
-"
-"if [ -f ~/.git-completion.bash ]; then
-"      . ~/.git-completion.bash
-"fi
-
-autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
-autocmd FileType json vnoremap <buffer> <c-f> :call RangeJsonBeautify()<cr>
-autocmd FileType jsx vnoremap <buffer> <c-f> :call RangeJsxBeautify()<cr>
-autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
-autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+"解决crontab -e时，提示crontab: temp file must be edited in place
+autocmd filetype crontab setlocal nobackup nowritebackup

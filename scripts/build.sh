@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # File    : build.sh
-# Author  : lihan
+# Author  : 
 # Version : 1.0
-# Company : xiaojukeji
-# Contact : lihan@diditaxi.com.cn
+# Company : 
+# Contact : 
 # Date    : 2015-07-23 12:13:55
 
-mkdir build && cd build && cmake .. && make && make install
+mkdir build && cd build && cmake .. && make -j4 && make install
 

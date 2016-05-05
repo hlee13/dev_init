@@ -19,7 +19,7 @@ if [ ${fileCnt} -eq 0 ]; then
 fi
 
 if [ ${fileCnt} -eq 1 ]; then
-    vi ${filename}
+    vim ${filename}
     exit
 fi
 
@@ -28,8 +28,8 @@ for(( i=1; i <= ${fileCnt}; i++ )) do
 done
 
 read -p "Enter a number: " fileNum
+[ ${#fileNum} -eq 0 ] && { vim ${filename[0]} ; exit ; }
+[ ${fileNum} = "A" ] && { vim ${filename[*]}; exit; }
 checkInt $fileNum
-#[ ${#fileNum} -eq 0 ] && echo "Bye!" && exit
-[ ${#fileNum} -eq 0 ] && { vi ${filename[0]} ; exit ; }
 [ $fileNum -eq 0 -o $fileNum -gt ${fileCnt} ] && { echo "Args too larger !";exit 1; } 
-vi ${filename[`expr ${fileNum} - 1`]}
+vim ${filename[`expr ${fileNum} - 1`]}

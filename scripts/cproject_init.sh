@@ -8,5 +8,4 @@ project_name=${project_name%%/}
 
 mkdir -p ~/.compile_commands_json/${project_name}
 
-cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=1
-mv ${filename} ~/.compile_commands_json/${project_name}/
+mkdir -p build && cd build && cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1 && cp ${filename} ~/.compile_commands_json/${project_name}/ && cd -

@@ -25,5 +25,5 @@
 * * * * * cd /home/didi/github/bigdata-dp/its && ~/scripts/cscope.sh > cscope.log 2>&1
 
 # CTAGS
-*/2 * * * * cd /home/didi/github/bigdata-dp/its && ctags -R .
-*/2 * * * * cd /home/didi/github/bigdata-dp && ctags -R --exclude=boost --exclude=gtest --exclude=gmock third-64/*
+# */2 * * * * cd /home/didi/github/bigdata-dp/its && ctags -R .
+# */2 * * * * cd /home/didi/github/bigdata-dp && ctags -R --exclude=boost --exclude=gtest --exclude=gmock third-64/*

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # File    : mkclass.sh
-# Author  : lihan
+# Author  : 
 # Version : 1.0
-# Company : xiaojukeji
-# Contact : lihan@diditaxi.com.cn
+# Company : 
+# Contact : 
 # Date    : 2015-07-23 11:20:08
 
 if [ $# -eq 0 ];then

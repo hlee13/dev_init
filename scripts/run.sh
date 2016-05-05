@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # File    : run.sh
-# Author  : lihan
+# Author  : 
 # Version : 1.0
-# Company : xiaojukeji
-# Contact : lihan@diditaxi.com.cn
+# Company : 
+# Contact : 
 # Date    : 2015-07-23 13:31:46
 
 [ -f output/bin/PROJECT_XXX ] && output/bin/PROJECT_XXX $@
