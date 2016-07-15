@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # File    : cmake_project.sh
-# Author  : 
+# Author  : lihan
 # Version : 1.0
 # Company : 
 # Contact : 
@@ -20,7 +20,7 @@ cd ${PROJECT_NAME}
 PROJECT_DIR=`pwd`/
 PROJECT_DIR=${PROJECT_DIR//\//\\\/}
 
-mkdir -p src/service src/core src/client src/mock src/third
+mkdir -p src/service src/core src/client src/mock src/third src/test
 mkdir -p conf
 mkdir -p output/bin
 

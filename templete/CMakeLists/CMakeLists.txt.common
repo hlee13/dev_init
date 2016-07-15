@@ -1,15 +1,39 @@
 cmake_minimum_required (VERSION 2.6)
 project (PROJECT_XXX)
 
-set(ROOT PROJECT_ROOT_XXX)
+set(ROOT "/Users/didi/WorkSpace/gitlab/")
 set(CMAKE_CXX_FLAGS "-g -pipe -std=c++0x -W -Wall -fPIC")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 set(PROJECT_DIR PROJECT_DIR_XXX)
 
-set(TUTORIAL_THRIFT_MODULE ${PROJECT_DIR}/../tutorial-thrift/)
-set(TUTORIAL_THRIFT_MODULE_INCLUDE ${TUTORIAL_THRIFT_MODULE}/output/include)
-file(GLOB_RECURSE TUTORIAL_THRIFT_MODULE_LIB "${TUTORIAL_THRIFT_MODULE}/output/lib/*.a")
+set(OPENCV_MODULE_INCLUDE "/usr/local/include/opencv/"
+    "/usr/local/include/opencv2/")
+file(GLOB_RECURSE OPENCV_MODULE_LIB "/usr/local/lib/libopencv*.dylib")
+
+set(LOG4CPLUS_MODULE ${ROOT}/third-64/log4cplus)
+set(LOG4CPLUS_MODULE_INCLUDE ${LOG4CPLUS_MODULE}/include)
+file(GLOB_RECURSE LOG4CPLUS_MODULE_LIB "${LOG4CPLUS_MODULE}/lib/*.a")
+
+set(RD_CWORKSPACE /Users/didi/WorkSpace/CWorkSpace/)
+set(RD_CWORKSPACE_INCLUDE ${RD_CWORKSPACE}/include)
+file(GLOB_RECURSE RD_CWORKSPACE_LIB "${RD_CWORKSPACE}/lib/*.a")
+
+set(THRIFT_MODULE ${ROOT}/third-64/thrift)
+set(THRIFT_MODULE_INCLUDE ${THRIFT_MODULE}/include)
+file(GLOB_RECURSE THRIFT_MODULE_LIB "${THRIFT_MODULE}/lib/*.a")
+
+set(BOOST_MODULE ${ROOT}/third-64/boost)
+set(BOOST_MODULE_INCLUDE ${BOOST_MODULE}/include)
+file(GLOB_RECURSE BOOST_MODULE_LIB "${BOOST_MODULE}/lib/*.a")
+
+set(GTEST_MODULE ${ROOT}/third-64/gtest)
+set(GTEST_MODULE_INCLUDE ${GTEST_MODULE}/include)
+file(GLOB_RECURSE GTEST_MODULE_LIB "${GTEST_MODULE}/lib/*.a")
+
+set(GMOCK_MODULE ${ROOT}/third-64/gmock)
+set(GMOCK_MODULE_INCLUDE ${GMOCK_MODULE}/include)
+file(GLOB_RECURSE GMOCK_MODULE_LIB "${GMOCK_MODULE}/lib/*.a")
 
 #set(PROTO_COMPILER /usr/local/bin/protoc)
 #set(PROTO_GEN_DIR ${PROJECT_DIR}/src)
@@ -33,18 +57,29 @@ file(GLOB_RECURSE TUTORIAL_THRIFT_MODULE_LIB "${TUTORIAL_THRIFT_MODULE}/output/l
 #    file(REMOVE ${SKELETON_FILE})
 #endforeach(MY_THRIFT)
 
-file(GLOB_RECURSE SERVICE_SOURCES "src/service/*.cpp"
+file(GLOB_RECURSE SERVICE_SOURCES 
+        "src/*.cpp"
+        "src/service/*.cpp"
         "src/core/*.cpp")
 
 include_directories(
-    ${TUTORIAL_THRIFT_MODULE_INCLUDE}
+    ${LOG4CPLUS_MODULE_INCLUDE}
+    ${BOOST_MODULE_INCLUDE}
+    ${THRIFT_MODULE_INCLUDE}
+    ${GTEST_MODULE_INCLUDE}
+    ${GMOCK_MODULE_INCLUDE}
+    ${RD_CWORKSPACE_INCLUDE}
     )
 
 add_executable(PROJECT_XXX-service ${SERVICE_SOURCES})
 
 target_link_libraries(PROJECT_XXX-service
-    ${TUTORIAL_THRIFT_MODULE_LIB}
-    pthread
-    rt)
+    ${LOG4CPLUS_MODULE_LIB}
+    ${BOOST_MODULE_LIB}
+    ${THRIFT_MODULE_LIB}
+    ${GTEST_MODULE_LIB}
+    ${GMOCK_MODULE_LIB}
+    ${RD_CWORKSPACE_LIB}
+    pthread)
 
 install(TARGETS PROJECT_XXX-service DESTINATION ${PROJECT_DIR}/output/bin/) 

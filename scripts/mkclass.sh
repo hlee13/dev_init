@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # File    : mkclass.sh
-# Author  : 
+# Author  : lihan
 # Version : 1.0
 # Company : 
 # Contact : 

@@ -1,7 +1,6 @@
-class XXX{
-    
-    public:
-        XXX();
-        ~XXX();
+class XXX {
+public:
+    XXX();
+    ~XXX();
 };
 
