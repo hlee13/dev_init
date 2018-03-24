@@ -253,6 +253,26 @@ function! NERDTreeOpenNode()
 endfunction
 command! NERDTreeOpenNode call NERDTreeOpenNode()
 
+function! UserOpenDirs(path_list)
+    for pth in a:path_list
+     if isdirectory(glob(pth))
+         let path_0 = g:NERDTreePath.New(pth)
+         let node_0 = g:NERDTreeFileNode.GetRootForTab().getChild(path_0)
+         call node_0.openRecursively()
+     endif
+    endfor
+endfunction
+
+function! NERDTreeOpenNode()
+     wincmd w
+     let path_list = ['src', 'conf']
+     call UserOpenDirs(path_list)
+
+     call NERDTreeRender()
+     wincmd l
+endfunction
+command! NERDTreeOpenNode call NERDTreeOpenNode()
+
 "reset &cpo back to users setting
 let &cpo = s:old_cpo
 
